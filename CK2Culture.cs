@@ -7,14 +7,15 @@ namespace CK2Helper
 {
 	public class CK2Culture
 	{
-
-		public CK2Province Centre { get; set; }
+        public CK2CultureGroup Group { get; set; }
+        public CK2Province Centre { get; set; }
 		public Dictionary<TitleRank, CK2Title> RankedCentres { get; set; }
 
 
 		public bool DynastyTitleNames { get; set; }
-		public CK2Culture(PdxSublist data, CK2World world): this(data.Key, world)
+		public CK2Culture(PdxSublist data, CK2World world, CK2CultureGroup group): this(data.Key, world)
 		{
+            Group = group;
 			if (data.BoolValues.ContainsKey("dynasty_title_names"))
 			{
 				DynastyTitleNames = data.BoolValues["dynasty_title_names"].Single();
@@ -40,7 +41,7 @@ namespace CK2Helper
 
 		public void FindCentre(CK2World world)
 		{
-			var culturedProvinces = world.CK2Provinces.Where(c => c.Culture == this);
+			var culturedProvinces = world.CK2Provinces.Values.Where(c => c.Culture == this);
 			if (culturedProvinces.Count() == 0)
 			{
 				return;

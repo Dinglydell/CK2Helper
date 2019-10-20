@@ -159,8 +159,25 @@ namespace CK2Helper
 		{
 			return LiegeTitle.GetTopLiegeTitle() ?? this;
 		}
-
-		public CK2Title GetLiege(TitleRank rank)
+        /// <summary>
+        /// Returns true if the given title is the liege of this title
+        /// </summary>
+        /// <param name="title"></param>
+        /// <returns></returns>
+        public bool IsVassalOf(CK2Title title)
+        {
+            return title == GetLiege(title.Rank);
+        }
+        /// <summary>
+        /// Returns true if the given title is the dejure liege of this title
+        /// </summary>
+        /// <param name="title"></param>
+        /// <returns></returns>
+        public bool IsDejureVassalOf(CK2Title title)
+        {
+            return title == GetDejureLiege(title.Rank);
+        }
+        public CK2Title GetLiege(TitleRank rank)
 		{
 			var liege = this;
 			while (liege != null)
@@ -204,9 +221,9 @@ namespace CK2Helper
 			return IsRevolt ? this : LiegeTitle?.GetRevolt();
 		}
 
-		public bool IsDejureLiege(CK2Title liege)
+		public bool IsDirectDejureLiege(CK2Title liege)
 		{
-			return DejureLiegeTitle != null && (DejureLiegeTitle == liege || DejureLiegeTitle.IsDejureLiege(liege));
+			return DejureLiegeTitle != null && (DejureLiegeTitle == liege || DejureLiegeTitle.IsDirectDejureLiege(liege));
 		}
 
 		internal void AddBaronData(PdxSublist data, CK2Title parent)

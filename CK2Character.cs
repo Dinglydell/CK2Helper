@@ -202,8 +202,9 @@ namespace CK2Helper
 
 		public List<string> Modifiers { get; set; }
 		public List<CK2CharacterBase> Children { get; private set; }
+        public List<CK2Artifact> Artifacts { get; private set; }
 
-		public CK2CharacterBase(CK2World world, PdxSublist data)
+        public CK2CharacterBase(CK2World world, PdxSublist data)
 		{
 			Children = new List<CK2CharacterBase>();
 			World = world;
@@ -213,6 +214,7 @@ namespace CK2Helper
 			MotherID = (int)GetFloat(data, "mot");
 			Titles = new List<CK2Title>();
 			Gender = (data.BoolValues.ContainsKey("fem") && data.BoolValues["fem"].Single()) ? Gender.female : Gender.male;
+            Artifacts = new List<CK2Artifact>();
 			if (data.FloatValues.ContainsKey("spouse"))
 			{
 				SpouseIDs = data.FloatValues["spouse"].ConvertAll(f => (int)f);
@@ -233,9 +235,9 @@ namespace CK2Helper
 			Attribites = new AttributeSet(this, data.Sublists["att"].FloatValues[string.Empty].Select(f => (int)f).ToList());
 
 			Traits = new List<CK2Traits>();
-			if (data.Sublists.ContainsKey("traits"))
+			if (data.Sublists.ContainsKey("tr"))
 			{
-				data.Sublists["traits"].FloatValues[string.Empty].ForEach(id =>
+				data.Sublists["tr"].FloatValues[string.Empty].ForEach(id =>
 				{
 					Traits.Add(world.CK2Traits[(int)id]);
 				});
@@ -267,6 +269,12 @@ namespace CK2Helper
 			if (data.FloatValues.ContainsKey("dnt"))
 			{
 				DynastyID = (int)data.FloatValues["dnt"].Single();
+                if (!world.CK2Dynasties.ContainsKey(DynastyID))
+                {
+                    Console.WriteLine($"Warning: No dynasty {DynastyID}");
+                    DynastyID = 0;
+                    
+                }
 			}
 			if (data.KeyValuePairs.ContainsKey("rel"))
 			{
@@ -288,9 +296,9 @@ namespace CK2Helper
 
 
 			BirthDate = data.GetDate("b_d");
-			if (ID == 664379)
+			if (ID == 1425122)
 			{
-				Console.WriteLine("Me!");
+				Console.WriteLine("Usunbike!");
 			}
 		}
 
@@ -311,6 +319,10 @@ namespace CK2Helper
 			if (Culture == null)
 			{
 				Culture = Capital?.Province?.Culture ?? (DynastyID == 0 ? null : World.CK2Dynasties[DynastyID].Culture);
+                if(ID == 1522394)
+                {
+                    Console.WriteLine( );
+                }
 			}
 		}
 
@@ -324,6 +336,9 @@ namespace CK2Helper
 			return data.FloatValues.ContainsKey(key) ? data.FloatValues[key].Single() : 0;
 		}
 
-
-	}
+        public void AddArtifact(CK2Artifact artifact)
+        {
+            Artifacts.Add(artifact);
+        }
+    }
 }

@@ -42,9 +42,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CK2Artifact.cs" />
     <Compile Include="CK2Building.cs" />
     <Compile Include="CK2Character.cs" />
     <Compile Include="CK2Culture.cs" />
+    <Compile Include="CK2CultureGroup.cs" />
     <Compile Include="CK2Dynasty.cs" />
     <Compile Include="CK2GovernmentType.cs" />
     <Compile Include="CK2Province.cs" />
@@ -52,6 +54,7 @@
     <Compile Include="CK2Traits.cs" />
     <Compile Include="CK2World.cs" />
     <Compile Include="CK2Title.cs" />
+    <Compile Include="Dated.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
